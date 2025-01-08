@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { BookingForm } from './components/BookingForm';
-import { OrderSummary } from './components/OrderSummary';
 import { Checkout } from './components/Checkout';
 import { TICKET_CATEGORIES, EVENT_NAME, ORGANIZER_NAME } from './config/tickets';
 import { Ticket } from 'lucide-react';
@@ -11,7 +10,7 @@ import { generateTicketsPDF, generateInvoicePDF } from './services/pdf';
 import { updateBookingExcel } from './services/excel';
 import { sendTicketEmail } from './services/email';
 
-type BookingStep = 'form' | 'summary' | 'checkout';
+type BookingStep = 'form' | 'checkout';
 
 function App() {
   const [step, setStep] = useState<BookingStep>('form');
@@ -34,7 +33,7 @@ function App() {
       },
       tickets: selectedTickets
     });
-    setStep('summary');
+    setStep('checkout');
   };
 
   const handlePaymentSuccess = async (orderId: string) => {
@@ -131,20 +130,12 @@ function App() {
           <BookingForm onSubmit={handleBookingSubmit} />
         )}
         
-        {step === 'summary' && bookingData && (
-          <OrderSummary
-            tickets={bookingData.tickets}
-            customer={bookingData.customer}
-            onConfirm={() => setStep('checkout')}
-            onBack={() => setStep('form')}
-          />
-        )}
-        
         {step === 'checkout' && bookingData && (
           <Checkout
             bookingData={bookingData}
             onPaymentSuccess={handlePaymentSuccess}
             onPaymentError={(error) => console.error('Payment error:', error)}
+            onBack={() => setStep('form')}
           />
         )}
       </main>
