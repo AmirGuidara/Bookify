@@ -17,9 +17,10 @@ interface CheckoutProps {
   };
   onPaymentSuccess: (orderId: string) => void;
   onPaymentError: (error: any) => void;
+  onBack: () => void;
 }
 
-export function Checkout({ bookingData, onPaymentSuccess, onPaymentError }: CheckoutProps) {
+export function Checkout({ bookingData, onPaymentSuccess, onPaymentError, onBack }: CheckoutProps) {
   const [paypalError, setPaypalError] = useState<string | null>(null);
   
   const calculateTotal = () => {
@@ -50,7 +51,7 @@ export function Checkout({ bookingData, onPaymentSuccess, onPaymentError }: Chec
       <div className="bg-white shadow-md rounded-lg p-6">
         <h2 className="text-2xl font-bold mb-6">Order Summary</h2>
         
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div className="border-b pb-4">
             <h3 className="font-medium text-gray-900 mb-2">Contact Information</h3>
             <p className="text-gray-600">{bookingData.firstName} {bookingData.lastName}</p>
@@ -91,43 +92,52 @@ export function Checkout({ bookingData, onPaymentSuccess, onPaymentError }: Chec
       </div>
 
       <div className="bg-white shadow-md rounded-lg p-6">
-        <h3 className="text-xl font-bold mb-4">Payment</h3>
-        {paypalError && (
-          <div className="mb-4 bg-red-50 border border-red-200 rounded-lg p-4">
-            <div className="flex items-center space-x-3">
-              <AlertTriangle className="h-5 w-5 text-red-500" />
-              <p className="text-red-700">{paypalError}</p>
+        <div className="flex flex-col space-y-4">
+          <h3 className="text-xl font-bold">Payment Method</h3>
+          {paypalError && (
+            <div className="mb-4 bg-red-50 border border-red-200 rounded-lg p-4">
+              <div className="flex items-center space-x-3">
+                <AlertTriangle className="h-5 w-5 text-red-500" />
+                <p className="text-red-700">{paypalError}</p>
+              </div>
             </div>
-          </div>
-        )}
-        <PayPalScriptProvider options={{ 
-          clientId: paypalClientId,
-          currency: "EUR"
-        }}>
-          <PayPalButtons
-            style={{ layout: "vertical" }}
-            createOrder={(data, actions) => {
-              return actions.order.create({
-                purchase_units: [{
-                  amount: {
-                    value: total.toString(),
-                    currency_code: "EUR"
-                  }
-                }]
-              });
-            }}
-            onApprove={async (data, actions) => {
-              if (actions.order) {
-                const order = await actions.order.capture();
-                onPaymentSuccess(order.id);
-              }
-            }}
-            onError={(err) => {
-              setPaypalError('There was an error processing your payment. Please try again.');
-              onPaymentError(err);
-            }}
-          />
-        </PayPalScriptProvider>
+          )}
+          <PayPalScriptProvider options={{ 
+            clientId: paypalClientId,
+            currency: "EUR"
+          }}>
+            <PayPalButtons
+              style={{ layout: "vertical" }}
+              createOrder={(data, actions) => {
+                return actions.order.create({
+                  purchase_units: [{
+                    amount: {
+                      value: total.toString(),
+                      currency_code: "EUR"
+                    }
+                  }]
+                });
+              }}
+              onApprove={async (data, actions) => {
+                if (actions.order) {
+                  const order = await actions.order.capture();
+                  onPaymentSuccess(order.id);
+                }
+              }}
+              onError={(err) => {
+                setPaypalError('There was an error processing your payment. Please try again.');
+                onPaymentError(err);
+              }}
+            />
+          </PayPalScriptProvider>
+          
+          <button
+            onClick={onBack}
+            className="w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+          >
+            Back to Booking
+          </button>
+        </div>
       </div>
     </div>
   );
