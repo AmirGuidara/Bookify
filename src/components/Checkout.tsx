@@ -6,13 +6,15 @@ import { AlertTriangle } from 'lucide-react';
 
 interface CheckoutProps {
   bookingData: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    street: string;
-    city: string;
-    postalCode: string;
-    country: string;
+    customer: {
+      firstName: string;
+      lastName: string;
+      email: string;
+      street: string;
+      city: string;
+      postalCode: string;
+      country: string;
+    };
     tickets: CartItem[];
   };
   onPaymentSuccess: (orderId: string) => void;
@@ -54,15 +56,15 @@ export function Checkout({ bookingData, onPaymentSuccess, onPaymentError, onBack
         <div className="space-y-6">
           <div className="border-b pb-4">
             <h3 className="font-medium text-gray-900 mb-2">Contact Information</h3>
-            <p className="text-gray-600">{bookingData.firstName} {bookingData.lastName}</p>
-            <p className="text-gray-600">{bookingData.email}</p>
+            <p className="text-gray-600">{bookingData.customer.firstName} {bookingData.customer.lastName}</p>
+            <p className="text-gray-600">{bookingData.customer.email}</p>
           </div>
 
           <div className="border-b pb-4">
             <h3 className="font-medium text-gray-900 mb-2">Shipping Address</h3>
-            <p className="text-gray-600">{bookingData.street}</p>
-            <p className="text-gray-600">{bookingData.city}, {bookingData.postalCode}</p>
-            <p className="text-gray-600">{bookingData.country}</p>
+            <p className="text-gray-600">{bookingData.customer.street}</p>
+            <p className="text-gray-600">{bookingData.customer.city}, {bookingData.customer.postalCode}</p>
+            <p className="text-gray-600">{bookingData.customer.country}</p>
           </div>
 
           <div>
