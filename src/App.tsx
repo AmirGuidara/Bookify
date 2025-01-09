@@ -9,10 +9,13 @@ import { generateTicketQR } from './services/qr';
 import { generateTicketsPDF, generateInvoicePDF } from './services/pdf';
 import { updateBookingExcel } from './services/excel';
 import { sendTicketEmail } from './services/email';
+import { useLanguage } from './contexts/LanguageContext';
+import { LanguageSelector } from './components/LanguageSelector';
 
 type BookingStep = 'form' | 'checkout';
 
 function App() {
+  const { t } = useLanguage();
   const [step, setStep] = useState<BookingStep>('form');
   const [bookingData, setBookingData] = useState<{
     customer: Omit<Customer, 'id' | 'createdAt'>;
@@ -115,12 +118,17 @@ function App() {
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center space-x-3">
-            <Ticket className="h-8 w-8 text-indigo-600" />
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">{EVENT_NAME}</h1>
-              <p className="text-sm text-gray-500">Organized by {ORGANIZER_NAME}</p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <Ticket className="h-8 w-8 text-indigo-600" />
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">{EVENT_NAME}</h1>
+                <p className="text-sm text-gray-500">
+                  {t('header.organizedBy')} {ORGANIZER_NAME}
+                </p>
+              </div>
             </div>
+            <LanguageSelector />
           </div>
         </div>
       </header>

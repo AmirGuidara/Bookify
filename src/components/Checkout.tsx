@@ -3,6 +3,7 @@ import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import { TICKET_CATEGORIES } from '../config/tickets';
 import { CartItem } from '../types';
 import { AlertTriangle } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface CheckoutProps {
   bookingData: {
@@ -23,6 +24,7 @@ interface CheckoutProps {
 }
 
 export function Checkout({ bookingData, onPaymentSuccess, onPaymentError, onBack }: CheckoutProps) {
+  const { t } = useLanguage();
   const [paypalError, setPaypalError] = useState<string | null>(null);
   
   const calculateTotal = () => {
@@ -41,7 +43,7 @@ export function Checkout({ bookingData, onPaymentSuccess, onPaymentError, onBack
         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
           <div className="flex items-center space-x-3">
             <AlertTriangle className="h-5 w-5 text-red-500" />
-            <p className="text-red-700">PayPal configuration is missing. Please contact support.</p>
+            <p className="text-red-700">{t('checkout.paypalMissing')}</p>
           </div>
         </div>
       </div>
@@ -51,24 +53,24 @@ export function Checkout({ bookingData, onPaymentSuccess, onPaymentError, onBack
   return (
     <div className="max-w-2xl mx-auto space-y-8">
       <div className="bg-white shadow-md rounded-lg p-6">
-        <h2 className="text-2xl font-bold mb-6">Order Summary</h2>
+        <h2 className="text-2xl font-bold mb-6">{t('checkout.orderSummary')}</h2>
         
         <div className="space-y-6">
           <div className="border-b pb-4">
-            <h3 className="font-medium text-gray-900 mb-2">Contact Information</h3>
+            <h3 className="font-medium text-gray-900 mb-2">{t('checkout.contactInfo')}</h3>
             <p className="text-gray-600">{bookingData.customer.firstName} {bookingData.customer.lastName}</p>
             <p className="text-gray-600">{bookingData.customer.email}</p>
           </div>
 
           <div className="border-b pb-4">
-            <h3 className="font-medium text-gray-900 mb-2">Shipping Address</h3>
+            <h3 className="font-medium text-gray-900 mb-2">{t('checkout.shippingAddress')}</h3>
             <p className="text-gray-600">{bookingData.customer.street}</p>
             <p className="text-gray-600">{bookingData.customer.city}, {bookingData.customer.postalCode}</p>
             <p className="text-gray-600">{bookingData.customer.country}</p>
           </div>
 
           <div>
-            <h3 className="font-medium text-gray-900 mb-2">Tickets</h3>
+            <h3 className="font-medium text-gray-900 mb-2">{t('checkout.tickets')}</h3>
             <div className="space-y-2">
               {bookingData.tickets
                 .filter(item => item.quantity > 0)
@@ -86,7 +88,7 @@ export function Checkout({ bookingData, onPaymentSuccess, onPaymentError, onBack
 
           <div className="border-t pt-4">
             <div className="flex justify-between text-lg font-bold">
-              <span>Total</span>
+              <span>{t('common.total')}</span>
               <span>€{total}</span>
             </div>
           </div>
@@ -95,12 +97,12 @@ export function Checkout({ bookingData, onPaymentSuccess, onPaymentError, onBack
 
       <div className="bg-white shadow-md rounded-lg p-6">
         <div className="flex flex-col space-y-4">
-          <h3 className="text-xl font-bold">Payment Method</h3>
+          <h3 className="text-xl font-bold">{t('checkout.paymentMethod')}</h3>
           {paypalError && (
             <div className="mb-4 bg-red-50 border border-red-200 rounded-lg p-4">
               <div className="flex items-center space-x-3">
                 <AlertTriangle className="h-5 w-5 text-red-500" />
-                <p className="text-red-700">{paypalError}</p>
+                <p className="text-red-700">{t('checkout.paymentError')}</p>
               </div>
             </div>
           )}
@@ -127,7 +129,7 @@ export function Checkout({ bookingData, onPaymentSuccess, onPaymentError, onBack
                 }
               }}
               onError={(err) => {
-                setPaypalError('There was an error processing your payment. Please try again.');
+                setPaypalError(t('checkout.paymentError'));
                 onPaymentError(err);
               }}
             />
@@ -137,7 +139,7 @@ export function Checkout({ bookingData, onPaymentSuccess, onPaymentError, onBack
             onClick={onBack}
             className="w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
           >
-            Back to Booking
+            {t('common.back')}
           </button>
         </div>
       </div>
