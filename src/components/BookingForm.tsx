@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { User, Mail, MapPin, Building, Globe, House } from 'lucide-react';
+import { User, Mail, MapPin, Building, Globe, Home } from 'lucide-react';
 import { TICKET_CATEGORIES } from '../config/tickets';
 import { countries } from '../data/countries';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -92,7 +92,7 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
             )}
           </div>
 
-          <div className="md:col-span-2">
+          <div>
             <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
               <MapPin size={18} />
               {t('form.street')}
@@ -105,10 +105,10 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
               <p className="mt-1 text-sm text-red-600">{errors.street.message}</p>
             )}
           </div>
-
-          <div className="md:col-span-2">
+          
+          <div>
             <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
-              <House size={18} />
+              <Home size={18} />
               {t('form.houseNumber')}
             </label>
             <input
