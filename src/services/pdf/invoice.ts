@@ -21,7 +21,7 @@ export async function generateInvoicePDF(
   // Add customer info
   doc.text('Bill To:', 20, 70);
   doc.text(`${customer.firstName} ${customer.lastName}`, 20, 80);
-  doc.text(customer.street, 20, 90);
+  doc.text(`${customer.street} ${customer.houseNumber}`, 20, 90);
   doc.text(`${customer.city}, ${customer.postalCode}`, 20, 100);
   doc.text(customer.country, 20, 110);
   

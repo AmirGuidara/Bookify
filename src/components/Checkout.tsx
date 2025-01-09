@@ -12,6 +12,7 @@ interface CheckoutProps {
       lastName: string;
       email: string;
       street: string;
+      houseNumber: string;
       city: string;
       postalCode: string;
       country: string;
@@ -64,7 +65,7 @@ export function Checkout({ bookingData, onPaymentSuccess, onPaymentError, onBack
 
           <div className="border-b pb-4">
             <h3 className="font-medium text-gray-900 mb-2">{t('checkout.shippingAddress')}</h3>
-            <p className="text-gray-600">{bookingData.customer.street}</p>
+            <p className="text-gray-600">{bookingData.customer.street} {bookingData.customer.houseNumber}</p>
             <p className="text-gray-600">{bookingData.customer.city}, {bookingData.customer.postalCode}</p>
             <p className="text-gray-600">{bookingData.customer.country}</p>
           </div>

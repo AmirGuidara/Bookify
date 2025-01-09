@@ -4,6 +4,7 @@ export interface Customer {
   lastName: string;
   email: string;
   street: string;
+  houseNumber: string;
   city: string;
   postalCode: string;
   country: string;

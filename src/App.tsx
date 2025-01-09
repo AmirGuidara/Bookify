@@ -30,6 +30,7 @@ function App() {
         lastName: data.lastName,
         email: data.email,
         street: data.street,
+        houseNumber: data.houseNumber,
         city: data.city,
         postalCode: data.postalCode,
         country: data.country
