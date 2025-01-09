@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { User, Mail, MapPin, Building, Globe } from 'lucide-react';
 import { TICKET_CATEGORIES } from '../config/tickets';
 import { countries } from '../data/countries';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const bookingSchema = z.object({
   firstName: z.string().min(2, 'First name is required'),
@@ -27,6 +28,7 @@ interface BookingFormProps {
 }
 
 export function BookingForm({ onSubmit }: BookingFormProps) {
+  const { t } = useLanguage();
   const { register, handleSubmit, formState: { errors }, watch } = useForm<BookingFormData>({
     resolver: zodResolver(bookingSchema),
     defaultValues: {
@@ -43,13 +45,13 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-2xl mx-auto p-6 space-y-8">
       <div className="space-y-6">
-        <h2 className="text-2xl font-bold text-gray-900">Personal Information</h2>
+        <h2 className="text-2xl font-bold text-gray-900">{t('form.personalInfo')}</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
               <User size={18} />
-              First Name
+              {t('form.firstName')}
             </label>
             <input
               {...register('firstName')}
@@ -63,7 +65,7 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
           <div>
             <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
               <User size={18} />
-              Last Name
+              {t('form.lastName')}
             </label>
             <input
               {...register('lastName')}
@@ -77,7 +79,7 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
           <div className="md:col-span-2">
             <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
               <Mail size={18} />
-              Email Address
+              {t('form.email')}
             </label>
             <input
               {...register('email')}
@@ -92,7 +94,7 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
           <div className="md:col-span-2">
             <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
               <MapPin size={18} />
-              Street Address
+              {t('form.street')}
             </label>
             <input
               {...register('street')}
@@ -106,7 +108,7 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
           <div>
             <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
               <Building size={18} />
-              City
+              {t('form.city')}
             </label>
             <input
               {...register('city')}
@@ -120,7 +122,7 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
           <div>
             <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
               <MapPin size={18} />
-              Postal Code
+              {t('form.postalCode')}
             </label>
             <input
               {...register('postalCode')}
@@ -134,13 +136,13 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
           <div className="md:col-span-2">
             <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
               <Globe size={18} />
-              Country
+              {t('form.country')}
             </label>
             <select
               {...register('country')}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
             >
-              <option value="">Select a country</option>
+              <option value="">{t('form.selectCountry')}</option>
               {countries.map(country => (
                 <option key={country.code} value={country.code}>
                   {country.name}
@@ -155,7 +157,7 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
       </div>
 
       <div className="space-y-6">
-        <h2 className="text-2xl font-bold text-gray-900">Ticket Selection</h2>
+        <h2 className="text-2xl font-bold text-gray-900">{t('tickets.title')}</h2>
         
         <div className="space-y-4">
           {TICKET_CATEGORIES.map((category, index) => (
@@ -165,18 +167,18 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
                   <h3 className="text-xl font-semibold text-gray-900">{category.name}</h3>
                   <div className="mt-2 space-y-1">
                     <p className="text-lg font-medium text-indigo-600">
-                      {category.price === 0 ? 'Free' : `€${category.price}`}
+                      {category.price === 0 ? t('tickets.free') : `€${category.price}`}
                     </p>
                     <p className="text-gray-500">
                       {category.ageRestriction && (
                         <span className="block">
-                          {category.ageRestriction.min && `${category.ageRestriction.min}+ years`}
-                          {category.ageRestriction.max && ` Up to ${category.ageRestriction.max} years`}
+                          {category.ageRestriction.min && t('tickets.ageRestriction.min').replace('{{age}}', category.ageRestriction.min.toString())}
+                          {category.ageRestriction.max && t('tickets.ageRestriction.max').replace('{{age}}', category.ageRestriction.max.toString())}
                         </span>
                       )}
                       {category.requiresStudentCard && (
                         <span className="block text-amber-600">
-                          Student card required at entry
+                          {t('tickets.studentRequired')}
                         </span>
                       )}
                     </p>
@@ -184,7 +186,7 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
                 </div>
                 <div className="w-32">
                   <label className="block text-sm font-medium text-gray-700">
-                    Quantity
+                    {t('tickets.quantity')}
                   </label>
                   <input
                     type="number"
@@ -205,11 +207,11 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
           disabled={!hasTickets}
           className="w-full bg-indigo-600 text-white py-3 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Continue to Checkout
+          {t('tickets.continueToCheckout')}
         </button>
         {!hasTickets && (
           <p className="mt-2 text-sm text-center text-gray-500">
-            Please select at least one ticket to continue
+            {t('tickets.selectAtLeastOne')}
           </p>
         )}
       </div>
