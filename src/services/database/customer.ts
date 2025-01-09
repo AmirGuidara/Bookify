@@ -11,6 +11,7 @@ export async function createCustomer(
       last_name: customer.lastName,
       email: customer.email,
       street: customer.street,
+      house_number: customer.houseNumber,
       city: customer.city,
       postal_code: customer.postalCode,
       country: customer.country
@@ -26,6 +27,7 @@ export async function createCustomer(
     lastName: data.last_name,
     email: data.email,
     street: data.street,
+    houseNumber: data.house_number,
     city: data.city,
     postalCode: data.postal_code,
     country: data.country,

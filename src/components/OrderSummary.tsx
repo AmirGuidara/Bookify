@@ -11,6 +11,7 @@ interface OrderSummaryProps {
     lastName: string;
     email: string;
     street: string;
+    houseNumber: string;
     city: string;
     postalCode: string;
     country: string;
@@ -43,7 +44,7 @@ export function OrderSummary({ tickets, customer, onConfirm, onBack }: OrderSumm
 
               <div className="border-b pb-4">
                 <h3 className="font-medium text-gray-900 mb-2">Shipping Address</h3>
-                <p className="text-gray-600">{customer.street}</p>
+                <p className="text-gray-600">{customer.street} {customer.houseNumber}</p>
                 <p className="text-gray-600">{customer.city}, {customer.postalCode}</p>
                 <p className="text-gray-600">{customer.country}</p>
               </div>
