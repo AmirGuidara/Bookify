@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { User, Mail, MapPin, Building, Globe } from 'lucide-react';
+import { User, Mail, MapPin, Building, Globe, House } from 'lucide-react';
 import { TICKET_CATEGORIES } from '../config/tickets';
 import { countries } from '../data/countries';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -12,6 +12,7 @@ const bookingSchema = z.object({
   lastName: z.string().min(2, 'Last name is required'),
   email: z.string().email('Invalid email address'),
   street: z.string().min(5, 'Street address is required'),
+  houseNumber: z.string().min(1, 'House number is required'),
   city: z.string().min(2, 'City is required'),
   postalCode: z.string().min(3, 'Postal code is required'),
   country: z.string().min(2, 'Country is required'),
@@ -102,6 +103,20 @@ export function BookingForm({ onSubmit }: BookingFormProps) {
             />
             {errors.street && (
               <p className="mt-1 text-sm text-red-600">{errors.street.message}</p>
+            )}
+          </div>
+
+          <div className="md:col-span-2">
+            <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+              <House size={18} />
+              {t('form.houseNumber')}
+            </label>
+            <input
+              {...register('houseNumber')}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            />
+            {errors.houseNumber && (
+              <p className="mt-1 text-sm text-red-600">{errors.houseNumber.message}</p>
             )}
           </div>
 

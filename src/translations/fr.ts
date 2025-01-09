@@ -13,6 +13,7 @@ export const fr = {
     lastName: 'Nom',
     email: 'Adresse e-mail',
     street: 'Adresse',
+    houseNumber: 'Numéro de maison',
     city: 'Ville',
     postalCode: 'Code postal',
     country: 'Pays',

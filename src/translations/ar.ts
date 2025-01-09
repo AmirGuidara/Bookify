@@ -13,6 +13,7 @@ export const ar = {
     lastName: 'اللقب',
     email: 'البريد الإلكتروني',
     street: 'العنوان',
+    houseNumber: 'رقم المنزل',
     city: 'المدينة',
     postalCode: 'الرمز البريدي',
     country: 'البلد',

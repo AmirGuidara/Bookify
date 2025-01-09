@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS customers (
   last_name TEXT NOT NULL,
   email TEXT NOT NULL,
   street TEXT NOT NULL,
+  house_number TEXT NOT NULL,
   city TEXT NOT NULL,
   postal_code TEXT NOT NULL,
   country TEXT NOT NULL,
