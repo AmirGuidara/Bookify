@@ -37,6 +37,8 @@ export function Checkout({ bookingData, onPaymentSuccess, onPaymentError, onBack
   const total = calculateTotal();
   const paypalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID;
 
+  console.log('PayPal Client ID:', paypalClientId);
+
   if (!paypalClientId) {
     return (
       <div className="max-w-2xl mx-auto p-6">
@@ -108,7 +110,8 @@ export function Checkout({ bookingData, onPaymentSuccess, onPaymentError, onBack
           )}
           <PayPalScriptProvider options={{ 
             clientId: paypalClientId,
-            currency: "EUR"
+            currency: "EUR",
+            debugger: true // Enable client-side error logging
           }}>
             <PayPalButtons
               style={{ layout: "vertical" }}
@@ -129,6 +132,7 @@ export function Checkout({ bookingData, onPaymentSuccess, onPaymentError, onBack
                 }
               }}
               onError={(err) => {
+                console.error("PayPal Error:", err); // Log error details
                 setPaypalError(t('checkout.paymentError'));
                 onPaymentError(err);
               }}
